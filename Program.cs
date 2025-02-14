@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +27,7 @@ app.MapRazorPages()
    .WithStaticAssets();
 app.MapPost("/upload", async ([FromForm]IFormFile file) =>
 {
-    var filePath = Path.GetTempPath();
-
-    using (var stream = System.IO.File.Create(Path.Join(filePath, file.FileName)))
+    using (var stream = System.IO.File.Create(Path.Join(builder.Environment.WebRootPath,"img", file.FileName)))
     {
         await file.CopyToAsync(stream);
     }
